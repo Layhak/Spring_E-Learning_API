@@ -9,12 +9,12 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: admin
+    password: 12345678
     url: jdbc:postgresql://localhost:5432/e_learning
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     generate-ddl: true
 file:
   storage-dir: "filestorage/images/"
