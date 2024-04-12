@@ -28,7 +28,7 @@ public class User {
     @Column(name = "family_name")
     private String familyName;
 
-    @Column(name = "gender",length = 30)
+    @Column(name = "gender", length = 30)
     private String gender;
 
     @Column(name = "given_name")
@@ -61,12 +61,12 @@ public class User {
     @Column(name = "username")
     private String username;
 
-//Generate UUID column
-    @Column(name = "uuid", unique = true, nullable = false, length = 36)
+    //Generate UUID column
+    @Column(name = "uuid", unique = true, nullable = false)
     private String uuid;
 
     //verified code
-    @Column(name = "verified_code",length = 100)
+    @Column(name = "verified_code", length = 100)
     private String verifiedCode;
 
     //city id

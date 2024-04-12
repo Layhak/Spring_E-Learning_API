@@ -3,9 +3,7 @@ package co.istad.jbsdemo.spring_elearning_api.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -28,7 +26,6 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id")
     )
-    private Set<Authority> authorities = new HashSet<>();
+    private List<Authority> authorities;
 
-    // Getters and setters
 }
