@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 @Data
 public class Role {
 
@@ -23,8 +23,8 @@ public class Role {
     @ManyToMany
     @JoinTable(
             name = "roles_authorities",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id")
+            joinColumns = @JoinColumn(name = "role_id",nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "authority_id",nullable = false)
     )
     private List<Authority> authorities;
 
