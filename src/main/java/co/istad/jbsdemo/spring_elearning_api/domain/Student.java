@@ -9,18 +9,23 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "cities")
-public class City {
+@Table(name = "students")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
-    private String name;
+    @Column(length = 250)
+    private String highSchool;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @Column(length = 250)
+    private String university;
+
+    private Boolean isBlocked;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

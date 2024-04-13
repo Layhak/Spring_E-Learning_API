@@ -1,12 +1,16 @@
 package co.istad.jbsdemo.spring_elearning_api.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
 @Table(name = "authorities")
 public class Authority {
 
@@ -14,9 +18,9 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
+    @Column(nullable = false, length = 250)
     private String name;
 
     @ManyToMany(mappedBy = "authorities")
-    private List<Role> roles ;
+    private Set<Role> roles;
 }

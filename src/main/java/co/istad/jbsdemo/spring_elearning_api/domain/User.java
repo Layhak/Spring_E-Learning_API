@@ -1,13 +1,17 @@
 package co.istad.jbsdemo.spring_elearning_api.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -15,68 +19,63 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 250)
     private String address1;
 
-    @Column
+    @Column(length = 250)
     private String address2;
 
-    @Column(name = "dob")
     private LocalDate dob;
 
-    @Column(nullable = false,unique = true)
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-    @Column(name = "family_name",nullable = false)
+    @Column(length = 100)
     private String familyName;
 
-    @Column(name = "gender", length = 30,nullable = false)
+    @Column(nullable = false, length = 10)
     private String gender;
 
-    @Column(name = "given_name",nullable = false)
+    @Column(length = 50)
     private String givenName;
 
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @Column(name = "is_verified")
     private Boolean isVerified;
 
-    @Column(name = "national_id_card",nullable = false)
+    @Column(unique = true, nullable = false, length = 250)
     private String nationalIdCard;
 
-    @Column(name = "password",nullable = false,length = 30)
+    @Column(nullable = false, length = 100)
     private String password;
 
-    @Column(name = "phone_number",nullable = false)
+    @Column(nullable = false, length = 20)
     private String phoneNumber;
 
-    @Column(name = "profile")
+    @Column(length = 250)
     private String profile;
 
-    @ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id",nullable = false))
-    private List<Role> role;
-
-    @Column(name = "username",nullable = false,unique = true)
+    @Column(nullable = false, length = 50)
     private String username;
 
-    //Generate UUID column
-    @Column(name = "uuid", unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 250)
     private String uuid;
 
-    //verified code
-    @Column(name = "verified_code", length = 100)
+    @Column(length = 100)
     private String verifiedCode;
-
-    //city id
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
+
 }

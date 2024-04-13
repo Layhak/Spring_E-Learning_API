@@ -1,44 +1,37 @@
 package co.istad.jbsdemo.spring_elearning_api.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.List;
-
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
 @Table(name = "countries")
 public class Country {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true, length = 250)
     private String flag;
 
-    @Column(nullable = false,length = 10)
+    @Column(nullable = false, length = 10)
     private String iso;
 
-    @Column(nullable = false,length = 60)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(name = "nice_name")
+    @Column(length = 250)
     private String niceName;
 
-    @Column(name = "num_code",nullable = false)
-    private int numberCode;
+    @Column(nullable = false)
+    private Integer numCode;
 
-    @Column(name = "phone_code",nullable = false)
-    private int phoneCode;
-
-    @ManyToMany
-    @JoinTable(
-        name = "countries_cities",
-        joinColumns = @JoinColumn(name = "countries_id", referencedColumnName = "id", nullable = false),
-        inverseJoinColumns = @JoinColumn(name = "cities_id", referencedColumnName = "id",nullable = false)
-    )
-    private List<City> cities;
+    @Column(nullable = false)
+    private Integer phoneCode;
 
 }

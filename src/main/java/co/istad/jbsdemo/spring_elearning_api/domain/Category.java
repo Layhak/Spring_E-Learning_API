@@ -9,18 +9,24 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "cities")
-public class City {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 100)
+    private String alias;
+
+    private String icons;
+
+    private Boolean isDeleted;
+
     @Column(unique = true, nullable = false, length = 50)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
-
+    @JoinColumn(name = "parent_category_id")
+    private Category parentCategory;
 }
