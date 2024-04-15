@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -21,7 +22,11 @@ public class Category {
 
     private String icons;
 
+    @ColumnDefault("false")
     private Boolean isDeleted;
+
+    @ColumnDefault("false")
+    private Boolean isDisabled;
 
     @Column(unique = true, nullable = false, length = 50)
     private String name;
