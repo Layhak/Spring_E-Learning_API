@@ -21,8 +21,11 @@ public interface CategoryMapper {
     CategoryResponse categoryToCategoryResponse(Category category);
 
     // This mapper method is now adjusted to ignore the subcategories as the record only takes id and name.
-    @Mapping(target = "subcategories", ignore = true)
-    CategoryParentResponse categoryToCategoryParentResponse(Category category);
+//    @Mapping(target = "subcategories", ignore = true)
+//    CategoryParentResponse categoryToCategoryParentResponse(Category category);
+    @Mapping(target = "parentCategoryId", source = "parentCategory.id")
+    List<CategoryParentResponse> categoriesToCategoriesResponses(List<Category> categories);
 
-    List<CategoryResponse> categoriesToCategoryResponses(List<Category> categories);
+
+
 }

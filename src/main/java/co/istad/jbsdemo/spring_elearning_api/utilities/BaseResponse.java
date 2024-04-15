@@ -35,6 +35,16 @@ public class BaseResponse<T> {
     public static  <T> BaseResponse<T> updateSuccess(){
         return  new BaseResponse<T>()
                 .setStatus(HttpStatus.OK.value())
-                .setMessage("Successfully update user data!");
+                .setMessage("Successfully update  data!");
+    }
+    public static  <T> BaseResponse<T> deleteSuccess(){
+        return  new BaseResponse<T>()
+                .setStatus(HttpStatus.OK.value())
+                .setMessage("Successfully delete  data!");
+    }
+    public static <T> BaseResponse<T> disableSuccess(){
+        return  new BaseResponse<T>()
+                .setStatus(HttpStatus.OK.value())
+                .setMessage("Successfully disable  data!");
     }
 }
