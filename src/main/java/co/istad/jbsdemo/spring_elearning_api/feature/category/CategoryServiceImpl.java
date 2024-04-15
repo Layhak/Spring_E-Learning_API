@@ -31,7 +31,6 @@ public class CategoryServiceImpl implements CategoryService {
         category.setAlias(categoryRequest.name().toLowerCase().replace(" ", "-"));
         category.setIsDeleted(false);
         categoryRepository.save(category);
-
         return categoryMapper.categoryToCategoryResponse(category);
     }
 
