@@ -3,19 +3,20 @@ package co.istad.jbsdemo.spring_elearning_api.feature.category;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryParentResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface CategoryService {
     CategoryResponse createCategory(CategoryRequest categoryRequest);
 
-    CategoryResponse updateCategory(Long categoryId, CategoryRequest categoryRequest);
+    CategoryResponse updateCategoryByAlias(String alias, CategoryRequest categoryRequest);
 
-    void deleteCategory(Long categoryId);
+    CategoryResponse disableCategoryByAlias(String alias);
 
-    CategoryResponse getCategory(Long categoryId);
+    CategoryResponse getCategoryByAlias(String alias);
 
-    List<CategoryResponse> getCategories();
+    Page<CategoryResponse> getCategories(int page, int limit);
 
-    CategoryParentResponse getParentCategories();
+    List<CategoryParentResponse> getParentCategories();
 }

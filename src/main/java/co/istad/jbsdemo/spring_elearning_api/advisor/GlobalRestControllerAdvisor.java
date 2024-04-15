@@ -40,6 +40,6 @@ public class GlobalRestControllerAdvisor {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResponse<?> handlePSQLException(DataIntegrityViolationException ex) {
-        return BaseResponse.badRequest().setMetadata("Email and username must be unique!");
+        return BaseResponse.badRequest().setMetadata("Data integrity violation exception occurred. ");
     }
 }

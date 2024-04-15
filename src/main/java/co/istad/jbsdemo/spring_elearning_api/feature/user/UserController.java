@@ -18,6 +18,7 @@ public class UserController {
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all user")
     public BaseResponse<List<UserDetailsResponse>> getAll() {
         return BaseResponse.<List<UserDetailsResponse>>ok()
                 .setPayload(userService.getAllUser());
@@ -25,6 +26,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get by username")
     public BaseResponse<UserDetailsResponse> getByUsername(@PathVariable String username) {
         return BaseResponse.<UserDetailsResponse>ok()
                 .setPayload(userService.getByUsername(username));
@@ -32,6 +34,7 @@ public class UserController {
 
     @PutMapping("/{username}/disable")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Disable user")
     public BaseResponse<UserDetailsResponse> disableUser(@PathVariable String username) {
         return BaseResponse.<UserDetailsResponse>updateSuccess()
                 .setPayload(userService.disableUser(username));
@@ -39,6 +42,7 @@ public class UserController {
 
     @PutMapping("/{username}/enable")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Enable user")
     public BaseResponse<UserDetailsResponse> enableUser(@PathVariable String username) {
         return BaseResponse.<UserDetailsResponse>updateSuccess()
                 .setPayload(userService.enableUser(username));
