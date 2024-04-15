@@ -5,22 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "authorities")
-public class Authority {
+@Table(name = "cities")
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 250)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "authorities")
-    private Set<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
+
 }

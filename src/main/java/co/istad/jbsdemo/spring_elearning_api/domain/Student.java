@@ -5,22 +5,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "authorities")
-public class Authority {
+@Table(name = "students")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 250)
-    private String name;
+    @Column(length = 250)
+    private String highSchool;
 
-    @ManyToMany(mappedBy = "authorities")
-    private Set<Role> roles;
+    @Column(length = 250)
+    private String university;
+
+    private Boolean isBlocked;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
