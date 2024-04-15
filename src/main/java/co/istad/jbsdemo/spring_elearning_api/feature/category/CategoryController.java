@@ -9,10 +9,8 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -31,5 +29,13 @@ public class CategoryController {
             """))))
     public BaseResponse<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return BaseResponse.<CategoryResponse>createSuccess().setPayload(categoryService.createCategory(categoryRequest));
+    }
+
+    @GetMapping
+    @Operation(summary = "Get list of categories")
+    Page<CategoryResponse> findList(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "2") int limit) {
+        return BaseResponse.<Page<CategoryResponse>>createSuccess().setPayload(categoryService.getCategories(page, limit)).getPayload();
     }
 }

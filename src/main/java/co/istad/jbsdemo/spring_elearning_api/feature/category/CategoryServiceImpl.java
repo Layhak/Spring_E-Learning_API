@@ -6,11 +6,11 @@ import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryReques
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryResponse;
 import co.istad.jbsdemo.spring_elearning_api.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +51,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryResponse> getCategories() {
-        return List.of();
+    public Page<CategoryResponse> getCategories(int page, int limit) {
+        //? PageRequest.of(page, limit) is a static factory method to create a new PageRequest with the given page number, size, and sort.
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        //? findAll(pageRequest) is a method from JpaRepository that returns all entities in the table.
+        Page<Category> categories = categoryRepository.findAll(pageRequest);
+        //? map() is a method from Stream that returns a stream consisting of the results of applying the given function to the elements of this stream.
+        return categories.map(categoryMapper::categoryToCategoryResponse);
     }
 
     @Override
