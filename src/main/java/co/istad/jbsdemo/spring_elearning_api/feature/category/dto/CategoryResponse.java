@@ -4,7 +4,7 @@ public record CategoryResponse(
         Long id,
         String name,
         String alias,
-        String description,
-        CategoryParentResponse parentCategory
+        String icons, // Added to match your entity
+        Long parentCategoryId
 ) {
 }
