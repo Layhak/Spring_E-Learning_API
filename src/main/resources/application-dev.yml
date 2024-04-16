@@ -9,8 +9,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 943012
-    url: jdbc:postgresql://localhost:5432/E-Learning_Api
+    password: 12345678
+    url: jdbc:postgresql://localhost:5432/e_learning
   jpa:
     show-sql: true
     hibernate:

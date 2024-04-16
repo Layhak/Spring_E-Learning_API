@@ -7,9 +7,9 @@ import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentRe
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentResponse;
 import co.istad.jbsdemo.spring_elearning_api.mapper.EnrollmentMapper;
 import co.istad.jbsdemo.spring_elearning_api.utilities.EnrollmentFilter;
-import co.istad.jbsdemo.spring_elearning_api.utilities.EnrollmentPagination;
 import co.istad.jbsdemo.spring_elearning_api.utilities.EnrollmentSpecification;
 import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
+import co.istad.jbsdemo.spring_elearning_api.utilities.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -123,18 +123,18 @@ public class EnrollmentServiceImpl implements EnrollmentService{
             enrollmentFilter.setIsCertified(Integer.valueOf(isCertified));
         }
 
-        int pageLimit = EnrollmentPagination.DEFAULT_PAGE_LIMIT;
-        if(params.containsKey(EnrollmentPagination.PAGE_LIMIT)) {
-            pageLimit = Integer.parseInt(params.get(EnrollmentPagination.PAGE_LIMIT));
+        int pageLimit = Pagination.DEFAULT_PAGE_LIMIT;
+        if(params.containsKey(Pagination.PAGE_LIMIT)) {
+            pageLimit = Integer.parseInt(params.get(Pagination.PAGE_LIMIT));
         }
 
-        int pageNumber = EnrollmentPagination.DEFAULT_PAGE_NUMBER;
-        if(params.containsKey(EnrollmentPagination.PAGE_NUMBER)) {
-            pageNumber = Integer.parseInt(params.get(EnrollmentPagination.PAGE_NUMBER));
+        int pageNumber = Pagination.DEFAULT_PAGE_NUMBER;
+        if(params.containsKey(Pagination.PAGE_NUMBER)) {
+            pageNumber = Integer.parseInt(params.get(Pagination.PAGE_NUMBER));
         }
 
         EnrollmentSpecification specification = new EnrollmentSpecification(enrollmentFilter);
-        Pageable pageable = EnrollmentPagination.getPageable(pageNumber, pageLimit);
+        Pageable pageable = Pagination.getPageable(pageNumber, pageLimit);
 
         Page<EnrollmentResponse> page = enrollmentRepository.findAll(specification, pageable)
                 .map(enrollmentMapper::mapToEnrollmentResponse);

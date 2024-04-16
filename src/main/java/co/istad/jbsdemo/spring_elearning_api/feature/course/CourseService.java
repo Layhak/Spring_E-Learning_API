@@ -2,7 +2,7 @@ package co.istad.jbsdemo.spring_elearning_api.feature.course;
 
 import co.istad.jbsdemo.spring_elearning_api.feature.course.dto.CourseDetailsResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.course.dto.CourseRequest;
-import org.springframework.data.domain.Page;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 
 public interface CourseService {
     //?Create course
@@ -21,8 +21,8 @@ public interface CourseService {
     CourseDetailsResponse disableCourseByAlias(String alias);
 
     //?Get course by alias
-    CourseDetailsResponse getCourseByAlias(String alias);
+    CourseDetailsResponse findCourseByAlias(String alias);
 
     //?Get all courses
-    Page<CourseDetailsResponse> getAllCourses(int page, int limit);
+    PageResponse<CourseDetailsResponse> findAllCourses(int page, int limit);
 }

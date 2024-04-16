@@ -5,9 +5,11 @@ import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryParent
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryResponse;
 import co.istad.jbsdemo.spring_elearning_api.mapper.CategoryMapper;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -68,7 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findByAlias(alias).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with alias " + alias + " not found"));
         category.setIsDisabled(true);
         categoryRepository.save(category);
-       return categoryMapper.categoryToCategoryResponse(category);
+        return categoryMapper.categoryToCategoryResponse(category);
     }
 
     @Override
@@ -78,17 +80,17 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.categoryToCategoryResponse(category);
     }
 
+
     @Override
-    public Page<CategoryResponse> getCategories(int page, int limit) {
-        if (page < 0 || limit < 0) {
+    public PageResponse<CategoryResponse> getCategories(int page, int limit) {
+
+        if (page < 0 || limit <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page and limit must be greater than 0");
         }
-        //? PageRequest.of(page, limit) is a static factory method to create a new PageRequest with the given page number, size, and sort.
-        PageRequest pageRequest = PageRequest.of(page, limit);
-        //? findAll(pageRequest) is a method from JpaRepository that returns all entities in the table.
-        Page<Category> categories = categoryRepository.findAll(pageRequest);
-        //? map() is a method from Stream that returns a stream consisting of the results of applying the given function to the elements of this stream.
-        return categories.map(categoryMapper::categoryToCategoryResponse);
+
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<CategoryResponse> categories = categoryRepository.findAll(pageable).map(categoryMapper::categoryToCategoryResponse);
+        return new PageResponse<>(categories);
     }
 
     @Override

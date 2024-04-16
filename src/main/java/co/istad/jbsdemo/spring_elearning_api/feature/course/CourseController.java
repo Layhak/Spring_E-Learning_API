@@ -3,10 +3,10 @@ package co.istad.jbsdemo.spring_elearning_api.feature.course;
 import co.istad.jbsdemo.spring_elearning_api.feature.course.dto.CourseDetailsResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.course.dto.CourseRequest;
 import co.istad.jbsdemo.spring_elearning_api.utilities.BaseResponse;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,12 +29,19 @@ public class CourseController {
     public BaseResponse<CourseDetailsResponse> createCourse(@Valid @RequestBody CourseRequest courseRequest) {
         return BaseResponse.<CourseDetailsResponse>createSuccess().setPayload(courseService.createCourse(courseRequest));
     }
+
     @GetMapping
     @Operation(summary = "Find all courses by pagination")
-    Page<CourseDetailsResponse> findList(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "2") int limit) {
-        return BaseResponse.<Page<CourseDetailsResponse>>ok().setPayload(courseService.getAllCourses(page, limit)).getPayload();
+    BaseResponse<PageResponse<CourseDetailsResponse>> findList(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "5") int limit) {
+        return BaseResponse.<PageResponse<CourseDetailsResponse>>ok().setPayload(courseService.findAllCourses(page, limit));
+    }
+
+    @GetMapping("/{alias}")
+    @Operation(summary = "Find a course detail by alias")
+    BaseResponse<CourseDetailsResponse> findByAlias(@PathVariable String alias) {
+        return BaseResponse.<CourseDetailsResponse>ok().setPayload(courseService.findCourseByAlias(alias));
     }
 
 }

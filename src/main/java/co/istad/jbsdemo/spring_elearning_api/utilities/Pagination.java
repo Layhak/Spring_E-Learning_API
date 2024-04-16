@@ -3,7 +3,7 @@ package co.istad.jbsdemo.spring_elearning_api.utilities;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-public interface EnrollmentPagination {
+public interface Pagination {
     int DEFAULT_PAGE_LIMIT = 5;
     int DEFAULT_PAGE_NUMBER = 1;
     String PAGE_LIMIT = "_limit";
