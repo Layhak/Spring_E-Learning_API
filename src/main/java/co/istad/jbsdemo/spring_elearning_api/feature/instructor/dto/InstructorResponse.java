@@ -10,7 +10,6 @@ public record InstructorResponse(
         String jobTitle,
         String linkedIn,
         String website,
-        String isBlocked,
-        Long userId
+        String isBlocked
 ) {
 }

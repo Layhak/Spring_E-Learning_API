@@ -1,22 +1,19 @@
 package co.istad.jbsdemo.spring_elearning_api.feature.instructor;
 
 import co.istad.jbsdemo.spring_elearning_api.domain.Instructor;
-import co.istad.jbsdemo.spring_elearning_api.domain.User;
 import co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto.InstructorCreateRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto.InstructorResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto.InstructorUpdateRequest;
-import co.istad.jbsdemo.spring_elearning_api.feature.user.UserRepository;
 import co.istad.jbsdemo.spring_elearning_api.mapper.InstructorMapper;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -25,12 +22,11 @@ public class InstructorServiceImpl implements InstructorService {
 
     private final InstructorRepository instructorRepository;
     private final InstructorMapper instructorMapper;
-    private final UserRepository userRepository;
 
     @Override
     public InstructorResponse createNew(InstructorCreateRequest instructorCreateRequest) {
 //        check is instructor already exists
-        if (instructorRepository.existsById(instructorCreateRequest.userId())){
+        if (instructorRepository.existsById(instructorCreateRequest.userId())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "This user already exists!"
@@ -39,59 +35,48 @@ public class InstructorServiceImpl implements InstructorService {
 
         Instructor instructor = instructorMapper.createInstructorFromRequest(instructorCreateRequest);
         instructorRepository.save(instructor);
+
         return instructorMapper.instructorToResponse(instructor);
     }
 
     @Override
-    public Page<InstructorResponse> getList(int page, int size) {
+    public PageResponse<InstructorResponse> getList(int page, int size) {
         // validate page and size
-        if(page < 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Page must be greater than or equal to zero");
+        if (page < 0 || size <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page and limit must be greater than 0");
         }
 
-        if(size < 1){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Size must be greater than or equal to one");
-        }
+        Pageable pageable = PageRequest.of(page, size);
+        Page<InstructorResponse> instructors = instructorRepository.findAll(pageable).map(instructorMapper::instructorToResponse);
 
-        Sort sortByInstName = Sort.by(Sort.Direction.ASC, "jobTitle");
-        PageRequest pageRequest = PageRequest.of(page, size, sortByInstName);
-
-        Page<Instructor> instructors = instructorRepository.findAll(pageRequest);
-
-        return instructors.map(instructorMapper::instructorToResponse);
+        return new PageResponse<>(instructors);
     }
 
     @Override
     public InstructorResponse findInstructorProfile(String username) {
-        User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() ->
-                        new NoSuchElementException("There is no instructor with username = " + username));
 
-        Instructor instructor = user.getInstructor();
-
-        if (instructor == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor not found for user with username: " + username);
-        }
+        String name = username.toLowerCase();
+        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
 
         return instructorMapper.instructorToResponse(instructor);
     }
 
     @Override
     public InstructorResponse updateInstructorProfile(String username, InstructorUpdateRequest instructorUpdateRequest) {
-        User user = userRepository
-                .findUserByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("There is no user with username = " + username));
 
-        Instructor instructor = user.getInstructor();
+        String name = username.toLowerCase().replace(" ", "-");
+        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
 
-        if (instructor == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor not found for user with username: " + username);
-        }
+        instructor.setBiography(instructorUpdateRequest.biography());
+        instructor.setGithub(instructorUpdateRequest.github());
+        instructor.setIsBlocked(instructorUpdateRequest.isBlocked());
+        instructor.setJobTitle(instructorUpdateRequest.jobTitle());
+        instructor.setLinkedIn(instructorUpdateRequest.linkedIn());
+        instructor.setWebsite(instructorUpdateRequest.website());
 
-        instructorMapper.updateInstructorFromRequest(instructor,instructorUpdateRequest);
-        return instructorMapper.instructorToResponse(instructorRepository.save(instructor));
+        instructorRepository.save(instructor);
+
+        return instructorMapper.instructorToResponse(instructor);
     }
-
 }
+
