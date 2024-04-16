@@ -43,7 +43,6 @@ public class CategoryServiceImpl implements CategoryService {
             category.setParentCategory(null);
         }
         categoryRepository.save(category);
-
         return categoryMapper.categoryToCategoryResponse(category);
     }
 
@@ -81,6 +80,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<CategoryResponse> getCategories(int page, int limit) {
+        if (page < 0 || limit < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page and limit must be greater than 0");
+        }
         //? PageRequest.of(page, limit) is a static factory method to create a new PageRequest with the given page number, size, and sort.
         PageRequest pageRequest = PageRequest.of(page, limit);
         //? findAll(pageRequest) is a method from JpaRepository that returns all entities in the table.

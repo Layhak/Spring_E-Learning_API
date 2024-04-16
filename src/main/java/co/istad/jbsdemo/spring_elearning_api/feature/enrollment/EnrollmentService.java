@@ -4,8 +4,10 @@ import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentDe
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentProgressResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentResponse;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface EnrollmentService {
@@ -16,5 +18,6 @@ public interface EnrollmentService {
     Optional<Integer> getProgressByCode(String code);
     EnrollmentProgressResponse certifyProgress(String code);
     EnrollmentResponse disable(String code);
+    PageResponse<EnrollmentResponse> getAllEnrollment(Map<String, String> params);
 
 }

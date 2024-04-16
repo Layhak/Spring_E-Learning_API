@@ -78,4 +78,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
+    @OneToOne(mappedBy = "user")
+    private Instructor instructor;
 }

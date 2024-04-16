@@ -5,12 +5,13 @@ import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentDe
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentProgressResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentResponse;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,14 +29,14 @@ public class EnrollmentController {
             .setPayload(enrollmentService.createEnrollment(enrollmentRequest));
     }
 
-    @GetMapping("/")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all enrollment")
-    public Page<EnrollmentResponse> getAllEnrollment(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "2") int limit) {
-        return enrollmentService.getAllEnrollment(page, limit);
-    }
+//    @GetMapping("/")
+//    @ResponseStatus(HttpStatus.OK)
+//    @Operation(summary = "Get all enrollment")
+//    public Page<EnrollmentResponse> getAllEnrollment(
+//            @RequestParam(required = false, defaultValue = "0") int page,
+//            @RequestParam(required = false, defaultValue = "2") int limit) {
+//        return enrollmentService.getAllEnrollment(page, limit);
+//    }
 
     @GetMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
@@ -75,6 +76,14 @@ public class EnrollmentController {
     public BaseResponse<EnrollmentResponse> disableEnrollment(@PathVariable String code) {
         return BaseResponse.<EnrollmentResponse>updateSuccess()
             .setPayload(enrollmentService.disable(code));
+    }
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all enrollment pagination and filter")
+    public BaseResponse<PageResponse<EnrollmentResponse>> getAllEnrollment(@RequestParam Map<String, String> params){
+        return BaseResponse.<PageResponse<EnrollmentResponse>>ok()
+                .setPayload(enrollmentService.getAllEnrollment(params));
     }
 
 }
