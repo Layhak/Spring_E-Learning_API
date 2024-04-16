@@ -9,11 +9,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", uses = InstructorMapper.class)
+@Mapper(componentModel = "spring")
 public interface StudentMapper {
     Student createStudentFromRequest(StudentCreateRequest studentCreateRequest);
     StudentResponse studentToResponse(Student student);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Student updateStudentFromRequest(@MappingTarget Student student, StudentUpdateRequest instructorUpdateRequest);
+
 }
 
