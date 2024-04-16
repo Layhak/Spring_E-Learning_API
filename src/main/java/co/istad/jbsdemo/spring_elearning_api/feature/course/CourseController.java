@@ -30,7 +30,7 @@ public class CourseController {
         return BaseResponse.<CourseDetailsResponse>createSuccess().setPayload(courseService.createCourse(courseRequest));
     }
     @GetMapping
-    @Operation(summary = "Get list of courses")
+    @Operation(summary = "Find all courses by pagination")
     Page<CourseDetailsResponse> findList(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "2") int limit) {
