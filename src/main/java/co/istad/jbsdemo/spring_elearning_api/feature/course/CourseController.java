@@ -6,10 +6,8 @@ import co.istad.jbsdemo.spring_elearning_api.utilities.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -31,4 +29,12 @@ public class CourseController {
     public BaseResponse<CourseDetailsResponse> createCourse(@Valid @RequestBody CourseRequest courseRequest) {
         return BaseResponse.<CourseDetailsResponse>createSuccess().setPayload(courseService.createCourse(courseRequest));
     }
+    @GetMapping
+    @Operation(summary = "Get list of courses")
+    Page<CourseDetailsResponse> findList(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "2") int limit) {
+        return BaseResponse.<Page<CourseDetailsResponse>>ok().setPayload(courseService.getAllCourses(page, limit)).getPayload();
+    }
+
 }

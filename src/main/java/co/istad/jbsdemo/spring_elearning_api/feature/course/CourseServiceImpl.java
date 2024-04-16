@@ -8,6 +8,7 @@ import co.istad.jbsdemo.spring_elearning_api.feature.course.dto.CourseRequest;
 import co.istad.jbsdemo.spring_elearning_api.mapper.CourseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,7 +32,9 @@ public class CourseServiceImpl implements CourseService {
             // Throw exception
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course with alias " + courseRequest.alias() + " already exists");
         }
+
         Course course = courseMapper.courseRequestToCourse(courseRequest);
+
         course.setCategory(category);
 //        course.setInstructor(instructor);
         course.setAlias(courseRequest.alias().toLowerCase().replace(" ", "-"));
@@ -70,6 +73,10 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<CourseDetailsResponse> getAllCourses(int page, int limit) {
-        return null;
+        if (page < 0 || limit <= 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page and limit must be greater than 0");
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        Page<Course> courses = courseRepository.findAll(pageRequest);
+        return courses.map(courseMapper::mapCourseToCourseDetailsResponse);
     }
 }
