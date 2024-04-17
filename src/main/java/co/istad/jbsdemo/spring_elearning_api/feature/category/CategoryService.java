@@ -3,7 +3,7 @@ package co.istad.jbsdemo.spring_elearning_api.feature.category;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryParentResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryResponse;
-import org.springframework.data.domain.Page;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface CategoryService {
 
     CategoryResponse getCategoryByAlias(String alias);
 
-    Page<CategoryResponse> getCategories(int page, int limit);
+    PageResponse<CategoryResponse> getCategories(int page, int limit);
 
     List<CategoryParentResponse> getParentCategories();
 }

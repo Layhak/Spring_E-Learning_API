@@ -13,7 +13,7 @@ public record InstructorCreateRequest(
         Boolean isBlocked,
         String linkedIn,
         String website,
-        @NotNull(message = "User ID is required")
+        @NotNull
         Long userId
 ) {
 }

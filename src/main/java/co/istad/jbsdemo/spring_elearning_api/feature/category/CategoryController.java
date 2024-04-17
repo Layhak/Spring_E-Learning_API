@@ -4,13 +4,13 @@ import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryParent
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.category.dto.CategoryResponse;
 import co.istad.jbsdemo.spring_elearning_api.utilities.BaseResponse;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,10 +36,11 @@ public class CategoryController {
 
     @GetMapping
     @Operation(summary = "Get list of categories")
-    Page<CategoryResponse> findList(
+    BaseResponse<PageResponse<CategoryResponse>> findList(
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "2") int limit) {
-        return BaseResponse.<Page<CategoryResponse>>ok().setPayload(categoryService.getCategories(page, limit)).getPayload();
+            @RequestParam(required = false, defaultValue = "5") int limit) {
+        return BaseResponse.<PageResponse<CategoryResponse>>ok().setPayload(categoryService.getCategories(page, limit));
+
     }
 
     @GetMapping("/parents")
