@@ -1,5 +1,6 @@
 package co.istad.jbsdemo.spring_elearning_api.feature.student;
 
+import co.istad.jbsdemo.spring_elearning_api.domain.Instructor;
 import co.istad.jbsdemo.spring_elearning_api.domain.Student;
 import co.istad.jbsdemo.spring_elearning_api.domain.User;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentCreateRequest;
@@ -27,15 +28,26 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public StudentResponse createNewStudent(StudentCreateRequest studentCreateRequest) {
 
-        if (studentRepository.existsById(studentCreateRequest.userId())){
+        if (studentRepository.existsById(studentCreateRequest.userId())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "This user already exists!"
             );
         }
 
+        User user = userRepository.findUserByUsername(studentCreateRequest.username())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "User has not been found!"
+                        )
+                );
+
         Student student = studentMapper.createStudentFromRequest(studentCreateRequest);
-        return studentMapper.studentToResponse(studentRepository.save(student));
+        student.setUser(user);
+        studentRepository.save(student);
+
+        return studentMapper.studentToResponse(student);
     }
 
     @Override
@@ -53,20 +65,25 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public StudentResponse findStudentProfile(String username) {
+
         String name = username.toLowerCase();
-        Student student = studentRepository.findByHighSchool(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student " + name + " not found"));
+        Student student = studentRepository.findByHighSchool(name).orElseThrow(()
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student " + name + " not found"));
 
         return studentMapper.studentToResponse(student);
     }
     @Override
     public StudentResponse updateStudentProfile(String username, StudentUpdateRequest studentUpdateRequest) {
-        String name = username.toLowerCase().replace(" ", "-");
-        Student student = studentRepository.findByHighSchool(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student " + name + " not found"));
 
-        student.setHighSchool(studentUpdateRequest.highSchool());
-        student.setUniversity(studentUpdateRequest.university());
-        student.setIsBlocked(studentUpdateRequest.isBlocked());
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User " + username + " not found"));
 
+        Student student = studentRepository.findByHighSchool(username).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Student " + username + " not found"));
+
+        user.setProfile(studentUpdateRequest.highSchool());
+        user.setProfile(studentUpdateRequest.university());
+        user.setProfile(String.valueOf(studentUpdateRequest.isBlocked()));
         studentRepository.save(student);
 
         return studentMapper.studentToResponse(student);

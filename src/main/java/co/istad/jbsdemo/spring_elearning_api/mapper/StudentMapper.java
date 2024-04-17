@@ -13,8 +13,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface StudentMapper {
     Student createStudentFromRequest(StudentCreateRequest studentCreateRequest);
     StudentResponse studentToResponse(Student student);
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Student updateStudentFromRequest(@MappingTarget Student student, StudentUpdateRequest studentUpdateRequest);
 
 }
 

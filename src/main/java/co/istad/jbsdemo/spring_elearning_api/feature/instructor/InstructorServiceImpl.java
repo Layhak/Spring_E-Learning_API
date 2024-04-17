@@ -68,7 +68,8 @@ public class InstructorServiceImpl implements InstructorService {
     public InstructorResponse findInstructorProfile(String username) {
 
         String name = username.toLowerCase();
-        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
+        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(()
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
 
         return instructorMapper.instructorToResponse(instructor);
     }
@@ -77,7 +78,7 @@ public class InstructorServiceImpl implements InstructorService {
     public InstructorResponse updateInstructorProfile(String username, InstructorUpdateRequest instructorUpdateRequest) {
 
         User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + username + " not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User " + username + " not found"));
 
         Instructor instructor = instructorRepository.findByBiography(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor not found for user " + username));

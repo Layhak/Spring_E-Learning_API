@@ -24,7 +24,7 @@ public class Student {
 
     private Boolean isBlocked;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

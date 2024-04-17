@@ -6,7 +6,6 @@ import lombok.Builder;
 
 @Builder
 public record InstructorCreateRequest(
-
         String biography,
         String github,
         String jobTitle,

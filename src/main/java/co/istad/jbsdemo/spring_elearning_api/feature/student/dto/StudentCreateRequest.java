@@ -9,6 +9,7 @@ public record StudentCreateRequest(
         String university,
         @NotNull(message = "not null")
         Boolean isBlocked,
-        Long userId
+        Long userId,
+        String username
         ) {
 }
