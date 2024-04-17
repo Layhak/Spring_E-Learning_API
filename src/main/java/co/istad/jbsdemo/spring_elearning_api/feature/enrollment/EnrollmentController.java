@@ -7,6 +7,7 @@ import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentRe
 import co.istad.jbsdemo.spring_elearning_api.feature.enrollment.dto.EnrollmentResponse;
 import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class EnrollmentController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create enrollment")
-    public BaseResponse<EnrollmentResponse> createEnrollment(@RequestBody EnrollmentRequest enrollmentRequest) {
+    public BaseResponse<EnrollmentResponse> createEnrollment(@Valid @RequestBody EnrollmentRequest enrollmentRequest) {
         return BaseResponse.<EnrollmentResponse>createSuccess()
             .setPayload(enrollmentService.createEnrollment(enrollmentRequest));
     }
@@ -49,7 +50,7 @@ public class EnrollmentController {
     @PutMapping("/{code}/progress")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update progress")
-    public BaseResponse<EnrollmentProgressResponse> updateProgress(@PathVariable String code, @RequestBody Integer progress) {
+    public BaseResponse<EnrollmentProgressResponse> updateProgress(@Valid @PathVariable String code, @Valid @RequestBody Integer progress) {
         return BaseResponse.<EnrollmentProgressResponse>updateSuccess()
             .setPayload(enrollmentService.updateProgress(code, progress));
     }
@@ -65,7 +66,7 @@ public class EnrollmentController {
     @PutMapping("/{code}/is-certified")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Certify progress")
-    public BaseResponse<EnrollmentProgressResponse> certifyProgress(@PathVariable String code) {
+    public BaseResponse<EnrollmentProgressResponse> certifyProgress(@Valid @PathVariable String code) {
         return BaseResponse.<EnrollmentProgressResponse>updateSuccess()
             .setPayload(enrollmentService.certifyProgress(code));
     }
@@ -73,7 +74,7 @@ public class EnrollmentController {
     @PutMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Disable enrollment")
-    public BaseResponse<EnrollmentResponse> disableEnrollment(@PathVariable String code) {
+    public BaseResponse<EnrollmentResponse> disableEnrollment(@Valid @PathVariable String code) {
         return BaseResponse.<EnrollmentResponse>updateSuccess()
             .setPayload(enrollmentService.disable(code));
     }
