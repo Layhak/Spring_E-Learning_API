@@ -4,6 +4,7 @@ import co.istad.jbsdemo.spring_elearning_api.base.BaseResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentCreateRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentUpdateRequest;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,9 @@ public class StudentController {
 
     @GetMapping("/")
     @Operation(summary = "Find all students by pagination")
-    Page<StudentResponse> findList(@RequestParam(required = false, defaultValue = "0") int page,
-                                   @RequestParam(required = false, defaultValue = "5") int size){
-        return studentService.getList(page, size);
+    public BaseResponse<PageResponse<StudentResponse>> findList(@RequestParam(required = false, defaultValue = "0") int page,
+                                                                @RequestParam(required = false, defaultValue = "5") int size){
+        return BaseResponse.<PageResponse<StudentResponse>>ok().setPayload(studentService.getList(page, size));
     }
     @GetMapping("/{highSchool}")
     @Operation(summary = "Find a student's profile")
