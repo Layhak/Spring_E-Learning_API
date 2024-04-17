@@ -29,17 +29,17 @@ public class StudentController {
     @GetMapping("/")
     @Operation(summary = "Find all students by pagination")
     Page<StudentResponse> findList(@RequestParam(required = false, defaultValue = "0") int page,
-                                   @RequestParam(required = false, defaultValue = "25") int size){
+                                   @RequestParam(required = false, defaultValue = "5") int size){
         return studentService.getList(page, size);
     }
-    @GetMapping("/{username}")
+    @GetMapping("/{highSchool}")
     @Operation(summary = "Find a student's profile")
     public ResponseEntity<StudentResponse> findStudentProfile(@PathVariable String username) {
         StudentResponse studentResponse = studentService.findStudentProfile(username);
         return ResponseEntity.ok(studentResponse);
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/{highSchool}")
     @Operation(summary = "Update a student's profile")
     public ResponseEntity<StudentResponse> updateStudentProfile(@PathVariable String username,
                                                                 @Valid @RequestBody StudentUpdateRequest studentUpdateRequest) {

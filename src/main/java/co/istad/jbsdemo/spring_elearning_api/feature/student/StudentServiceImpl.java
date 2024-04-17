@@ -59,28 +59,22 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public StudentResponse findStudentProfile(String username) {
-        // Retrieve the student entity based on the username
-        Student student = studentRepository.findByUserUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+        String name = username.toLowerCase();
+        Student student = studentRepository.findByHighSchool(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student " + name + " not found"));
 
-        // Map the student entity to a response DTO
         return studentMapper.studentToResponse(student);
     }
-
     @Override
     public StudentResponse updateStudentProfile(String username, StudentUpdateRequest studentUpdateRequest) {
-        // Retrieve the student entity based on the username
-        Student student = studentRepository.findByUserUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+        String name = username.toLowerCase().replace(" ", "-");
+        Student student = studentRepository.findByHighSchool(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student " + name + " not found"));
 
-        // Update the student entity with the data from the update request
-        studentMapper.updateStudentFromRequest(student, studentUpdateRequest);
+        student.setHighSchool(studentUpdateRequest.highSchool());
+        student.setUniversity(studentUpdateRequest.university());
+        student.setIsBlocked(studentUpdateRequest.isBlocked());
 
-        // Save the updated student entity
         studentRepository.save(student);
 
-        // Map the updated student entity to a response DTO
-        studentMapper.updateStudentFromRequest(student,studentUpdateRequest);
         return studentMapper.studentToResponse(student);
     }
 }
