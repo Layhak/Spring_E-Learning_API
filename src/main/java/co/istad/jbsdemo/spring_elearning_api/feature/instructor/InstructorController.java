@@ -22,12 +22,12 @@ public class InstructorController {
     @PostMapping
     @Operation(summary = "Create a new instructor", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = InstructorCreateRequest.class), examples = @ExampleObject(value = """
             {
-              "biography": "Sou",
-              "github": "sou@gmail.com",
-              "jobTitle": "Gamer",
+              "biography": "description of instructor",
+              "github": "username",
+              "jobTitle": "position",
               "isBlocked": true,
-              "linkedIn": "sou@gmail.com",
-              "website": "sou@gmail.com",
+              "linkedIn": "user",
+              "website": "username",
               "userId" : 0
             }
             """))))
@@ -51,14 +51,14 @@ public class InstructorController {
     }
 
     @PutMapping("/{username}")
-    @Operation(summary = " Update instructor’s information", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = InstructorUpdateRequest.class), examples = @ExampleObject(value = """
+    @Operation(summary = "Update instructor’s information", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = InstructorUpdateRequest.class), examples = @ExampleObject(value = """
             {
-                  "biography": "Sou",
-                  "github": "sou@gmail.com",
-                  "jobTitle": "Gamer",
+                  "biography": "description of instructor",
+                  "github": "username",
+                  "jobTitle": "position",
                   "isBlocked": true,
-                  "linkedIn": "sou@gmail.com",
-                  "website": "sou@gmail.com"
+                  "linkedIn": "user",
+                  "website": "username"
             }
             """))))
     public void updateInstructorProfile(@PathVariable String username, @RequestBody InstructorUpdateRequest request) {

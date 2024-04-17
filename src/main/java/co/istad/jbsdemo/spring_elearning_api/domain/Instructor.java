@@ -33,7 +33,7 @@ public class Instructor {
 
     private Boolean isBlocked;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
