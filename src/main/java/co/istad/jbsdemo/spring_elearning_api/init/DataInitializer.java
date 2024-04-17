@@ -1,6 +1,8 @@
 package co.istad.jbsdemo.spring_elearning_api.init;
 
 
+import co.istad.jbsdemo.spring_elearning_api.feature.citiesandcountries.CityAndCountryRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DataInitializer {
-
     //? Sample to start with
 
 //    private final RoleRepository roleRepository;
@@ -38,5 +39,11 @@ public class DataInitializer {
 //            accountTypeRepository.saveAll(accountTypes);
 //        }
 //    }
+
+
+
+// call void insertCountries(); from countryAndCityInit() to populate countries
+
+
 
 }
