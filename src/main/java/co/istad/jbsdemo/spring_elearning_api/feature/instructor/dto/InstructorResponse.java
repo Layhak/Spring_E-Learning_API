@@ -1,5 +1,6 @@
 package co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto;
 
+import co.istad.jbsdemo.spring_elearning_api.feature.user.dto.UserDetailsResponse;
 import lombok.Builder;
 
 @Builder
@@ -10,6 +11,7 @@ public record InstructorResponse(
         String jobTitle,
         String linkedIn,
         String website,
-        String isBlocked
+        String isBlocked,
+        UserDetailsResponse userDetailsResponse
 ) {
 }

@@ -6,14 +6,13 @@ import lombok.Builder;
 
 @Builder
 public record InstructorCreateRequest(
-        @NotBlank(message = "Biography is required")
         String biography,
         String github,
         String jobTitle,
         Boolean isBlocked,
         String linkedIn,
         String website,
-        @NotNull
+        String username,
         Long userId
 ) {
 }

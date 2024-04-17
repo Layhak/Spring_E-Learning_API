@@ -4,6 +4,7 @@ import co.istad.jbsdemo.spring_elearning_api.base.BaseResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentCreateRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.student.dto.StudentUpdateRequest;
+import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,27 +20,27 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "Create a new student")
-    public co.istad.jbsdemo.spring_elearning_api.base.BaseResponse<StudentResponse> createStudent(@Validated @RequestBody StudentCreateRequest request) {
+    public BaseResponse<StudentResponse> createStudent(@Validated @RequestBody StudentCreateRequest request) {
         return BaseResponse.<StudentResponse>createSuccess()
             .setPayload(studentService.createNewStudent(request));
     }
 
-    @GetMapping("/")
+    @GetMapping
     @Operation(summary = "Find all students by pagination")
-    Page<StudentResponse> findList(@RequestParam(required = false, defaultValue = "0") int page,
-                                   @RequestParam(required = false, defaultValue = "5") int size){
-        return studentService.getList(page, size);
+    public BaseResponse<PageResponse<StudentResponse>> findList(@RequestParam(required = false, defaultValue = "0") int page,
+                                                                @RequestParam(required = false, defaultValue = "5") int size){
+        return BaseResponse.<PageResponse<StudentResponse>>ok().setPayload(studentService.getList(page, size));
     }
-    @GetMapping("/{highSchool}")
+    @GetMapping("/{username}")
     @Operation(summary = "Find a student's profile")
     public ResponseEntity<StudentResponse> findStudentProfile(@PathVariable String username) {
         StudentResponse studentResponse = studentService.findStudentProfile(username);
         return ResponseEntity.ok(studentResponse);
     }
 
-    @PutMapping("/{highSchool}")
+    @PutMapping("/{username}")
     @Operation(summary = "Update a student's profile")
     public ResponseEntity<StudentResponse> updateStudentProfile(@PathVariable String username,
                                                                 @Valid @RequestBody StudentUpdateRequest studentUpdateRequest) {

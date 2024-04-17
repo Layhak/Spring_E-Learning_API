@@ -1,9 +1,11 @@
 package co.istad.jbsdemo.spring_elearning_api.feature.instructor;
 
 import co.istad.jbsdemo.spring_elearning_api.domain.Instructor;
+import co.istad.jbsdemo.spring_elearning_api.domain.User;
 import co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto.InstructorCreateRequest;
 import co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto.InstructorResponse;
 import co.istad.jbsdemo.spring_elearning_api.feature.instructor.dto.InstructorUpdateRequest;
+import co.istad.jbsdemo.spring_elearning_api.feature.user.UserRepository;
 import co.istad.jbsdemo.spring_elearning_api.mapper.InstructorMapper;
 import co.istad.jbsdemo.spring_elearning_api.utilities.PageResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class InstructorServiceImpl implements InstructorService {
 
     private final InstructorRepository instructorRepository;
     private final InstructorMapper instructorMapper;
+    private final UserRepository userRepository;
 
     @Override
     public InstructorResponse createNew(InstructorCreateRequest instructorCreateRequest) {
@@ -33,7 +36,16 @@ public class InstructorServiceImpl implements InstructorService {
             );
         }
 
+        User user = userRepository.findUserByUsername(instructorCreateRequest.username())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "User has not been found!"
+                        )
+                );
+
         Instructor instructor = instructorMapper.createInstructorFromRequest(instructorCreateRequest);
+        instructor.setUser(user);
         instructorRepository.save(instructor);
 
         return instructorMapper.instructorToResponse(instructor);
@@ -56,7 +68,8 @@ public class InstructorServiceImpl implements InstructorService {
     public InstructorResponse findInstructorProfile(String username) {
 
         String name = username.toLowerCase();
-        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
+        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(()
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
 
         return instructorMapper.instructorToResponse(instructor);
     }
@@ -64,18 +77,14 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public InstructorResponse updateInstructorProfile(String username, InstructorUpdateRequest instructorUpdateRequest) {
 
-        String name = username.toLowerCase().replace(" ", "-");
-        Instructor instructor = instructorRepository.findByBiography(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor " + name + " not found"));
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User " + username + " not found"));
 
-        instructor.setBiography(instructorUpdateRequest.biography());
-        instructor.setGithub(instructorUpdateRequest.github());
-        instructor.setIsBlocked(instructorUpdateRequest.isBlocked());
-        instructor.setJobTitle(instructorUpdateRequest.jobTitle());
-        instructor.setLinkedIn(instructorUpdateRequest.linkedIn());
-        instructor.setWebsite(instructorUpdateRequest.website());
+        Instructor instructor = instructorRepository.findByBiography(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instructor not found for user " + username));
 
+        user.setProfile(instructorUpdateRequest.biography());
         instructorRepository.save(instructor);
-
         return instructorMapper.instructorToResponse(instructor);
     }
 }
