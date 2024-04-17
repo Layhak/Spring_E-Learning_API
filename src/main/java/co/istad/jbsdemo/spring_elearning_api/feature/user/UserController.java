@@ -74,12 +74,10 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete by username")
     public BaseResponse<UserDetailsResponse> deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
-        return BaseResponse.<UserDetailsResponse>deleteSuccess().setMessage("User deleted successfully!");
-
+        return BaseResponse.deleteSuccess();
     }
 
 }

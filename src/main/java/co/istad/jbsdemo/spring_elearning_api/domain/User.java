@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @Entity
 @NoArgsConstructor
 @Table(name = "users")

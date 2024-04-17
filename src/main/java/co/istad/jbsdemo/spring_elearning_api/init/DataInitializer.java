@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataInitializer {
     private final RoleRepository roleRepository;
+    private final RoleRepository userRepository;
 
     @PostConstruct
     void roleInit() {
@@ -26,5 +27,6 @@ public class DataInitializer {
             }
         }
     }
+
 
 }
