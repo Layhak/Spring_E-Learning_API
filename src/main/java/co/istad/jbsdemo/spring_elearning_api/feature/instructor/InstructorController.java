@@ -27,7 +27,7 @@ public class InstructorController {
               "jobTitle": "position",
               "isBlocked": true,
               "linkedIn": "user",
-              "website": "username"
+              "website": "username",
               "userId" : 0
             }
             """))))
