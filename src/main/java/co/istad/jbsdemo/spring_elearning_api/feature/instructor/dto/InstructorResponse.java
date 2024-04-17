@@ -12,6 +12,6 @@ public record InstructorResponse(
         String linkedIn,
         String website,
         String isBlocked,
-        UserDetailsResponse userDetailsResponse
+        UserDetailsResponse user
 ) {
 }
