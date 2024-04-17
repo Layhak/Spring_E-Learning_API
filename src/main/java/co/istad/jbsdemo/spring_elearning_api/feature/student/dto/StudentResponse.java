@@ -8,7 +8,7 @@ public record StudentResponse(
         String highSchool,
         String university,
         Boolean isBlocked,
-        UserDetailsResponse userDetailsResponse
+        UserDetailsResponse user
         ) {
 
 }
